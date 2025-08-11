@@ -1,0 +1,530 @@
+✅ 1. Classify each ticket by urgency based on priority
+Priority 3 → 'High'
+Priority 2 → 'Medium'
+Priority 1 → 'Low'
+select ticket_id,customer_name,issue_type,status,assigned_team, case
+    -> priority
+    -> when 3 then 'high'
+    -> when 2 then 'midium'
+    -> else 'low'
+    -> end
+    -> from display;
++-----------+---------------+------------+-----------+---------------+----------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | status    | assigned_team | case
+priority
+when 3 then 'high'
+when 2 then 'midium'
+else 'low'
+end |
++-----------+---------------+------------+-----------+---------------+----------------------------------------------------------------------+
+|         1 | Alice         | Network    | Open      | Network Team  | high                                                                 |
+|         2 | Bob           | Software   | Closed    | Software Team | midium                                                               |
+|         3 | Charlie       | Hardware   | Pending   | Hardware Team | low                                                                  |
+|         4 | Diana         | Network    | Open      | Network Team  | midium                                                               |
+|         5 | Eve           | Software   | Closed    | Software Team | high                                                                 |
+|         6 | Frank         | Software   | Pending   | Software Team | low                                                                  |
+|         7 | Grace         | Network    | Escalated | Network Team  | midium                                                               |
+|         8 | Henry         | Hardware   | Open      | Hardware Team | high                                                                 |
+|         9 | Ivy           | Network    | Closed    | Network Team  | low                                                                  |
+|        10 | Jack          | Software   | Open      | Software Team | high                                                                 |
+|        11 | Kate          | Hardware   | Pending   | Hardware Team | midium                                                               |
+|        12 | Leo           | Software   | Closed    | Software Team | midium                                                               |
+|        13 | Mona          | Network    | Escalated | Network Team  | high                                                                 |
+|        14 | Nina          | Hardware   | Open      | Hardware Team | low                                                                  |
+|        15 | Oscar         | Software   | Pending   | Software Team | high                                                                 |
+|        16 | Paul          | Network    | Closed    | Network Team  | midium                                                               |
+|        17 | Queen         | Hardware   | Pending   | Hardware Team | low                                                                  |
+|        18 | Rita          | Software   | Open      | Software Team | midium                                                               |
+|        19 | Sam           | Network    | Open      | Network Team  | high                                                                 |
+|        20 | Tina          | Hardware   | Escalated | Hardware Team | midium                                                               |
++-----------+---------------+------------+-----------+---------------+----------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+✅ 2. Add a column to classify ticket status
+'Active' if status = 'Open' or 'Escalated'
+'Inactive' if status = 'Closed'
+'Waiting' otherwise
+
+ select customer_name,issue_type,priority, case
+    -> status
+    -> when 'Open' then 'active'
+    -> when 'Escalated' then 'active'
+    -> when 'closed' then 'inactive'
+    -> when 'pending' then 'waiting'
+    -> else 'null'
+    -> end
+    -> from display;
++---------------+------------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+| customer_name | issue_type | priority | case
+status
+when 'Open' then 'active'
+when 'Escalated' then 'active'
+when 'closed' then 'inactive'
+when 'pending' then 'waiting'
+else 'null'
+end |
++---------------+------------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+| Alice         | Network    |        3 | active                                                                                                                                           |
+| Bob           | Software   |        2 | inactive                                                                                                                                         |
+| Charlie       | Hardware   |        1 | waiting                                                                                                                                          |
+| Diana         | Network    |        2 | active                                                                                                                                           |
+| Eve           | Software   |        3 | inactive                                                                                                                                         |
+| Frank         | Software   |        1 | waiting                                                                                                                                          |
+| Grace         | Network    |        2 | active                                                                                                                                           |
+| Henry         | Hardware   |        3 | active                                                                                                                                           |
+| Ivy           | Network    |        1 | inactive                                                                                                                                         |
+| Jack          | Software   |        3 | active                                                                                                                                           |
+| Kate          | Hardware   |        2 | waiting                                                                                                                                          |
+| Leo           | Software   |        2 | inactive                                                                                                                                         |
+| Mona          | Network    |        3 | active                                                                                                                                           |
+| Nina          | Hardware   |        1 | active                                                                                                                                           |
+| Oscar         | Software   |        3 | waiting                                                                                                                                          |
+| Paul          | Network    |        2 | inactive                                                                                                                                         |
+| Queen         | Hardware   |        1 | waiting                                                                                                                                          |
+| Rita          | Software   |        2 | active                                                                                                                                           |
+| Sam           | Network    |        3 | active                                                                                                                                           |
+| Tina          | Hardware   |        2 | active                                                                                                                                           |
++---------------+------------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+✅ 3. List tickets and show issue category
+'Software Issue', 'Hardware Issue', 'Network Issue', or 'Other'
+select ticket_id,customer_name, case
+    -> issue_type
+    -> when 'network' then 'network issue'
+    -> when 'software' then 'software issue'
+    -> when 'hardware' then 'hardware issue'
+    -> else 'others'
+    -> end
+    -> from display;
++-----------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+| ticket_id | customer_name | case
+issue_type
+when 'network' then 'network issue'
+when 'software' then 'software issue'
+when 'hardware' then 'hardware issue'
+else 'others'
+end |
++-----------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+|         1 | Alice         | network issue                                                                                                                                     |
+|         2 | Bob           | software issue                                                                                                                                    |
+|         3 | Charlie       | hardware issue                                                                                                                                    |
+|         4 | Diana         | network issue                                                                                                                                     |
+|         5 | Eve           | software issue                                                                                                                                    |
+|         6 | Frank         | software issue                                                                                                                                    |
+|         7 | Grace         | network issue                                                                                                                                     |
+|         8 | Henry         | hardware issue                                                                                                                                    |
+|         9 | Ivy           | network issue                                                                                                                                     |
+|        10 | Jack          | software issue                                                                                                                                    |
+|        11 | Kate          | hardware issue                                                                                                                                    |
+|        12 | Leo           | software issue                                                                                                                                    |
+|        13 | Mona          | network issue                                                                                                                                     |
+|        14 | Nina          | hardware issue                                                                                                                                    |
+|        15 | Oscar         | software issue                                                                                                                                    |
+|        16 | Paul          | network issue                                                                                                                                     |
+|        17 | Queen         | hardware issue                                                                                                                                    |
+|        18 | Rita          | software issue                                                                                                                                    |
+|        19 | Sam           | network issue                                                                                                                                     |
+|        20 | Tina          | hardware issue                                                                                                                                    |
++-----------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+✅ 4. Mark tickets as "VIP" if customer name starts with A, E, M, or S
+ select ticket_id,customer_name,issue_type,priority, case
+    -> when customer_name like 'A%' then 'VIP'
+    -> when customer_name like 'E%' then 'VIP'
+    -> when customer_name like 'M%' then 'VIP'
+    -> when customer_name like 'S%' then 'VIP'
+    -> else 'normal'
+    -> end
+    -> from display;
++-----------+---------------+------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | case
+when customer_name like 'A%' then 'VIP'
+when customer_name like 'E%' then 'VIP'
+when customer_name like 'M%' then 'VIP'
+when customer_name like 'S%' then 'VIP'
+else 'normal'
+end |
++-----------+---------------+------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | VIP                                                                                                                                                                                    |
+|         2 | Bob           | Software   |        2 | normal                                                                                                                                                                                 |
+|         3 | Charlie       | Hardware   |        1 | normal                                                                                                                                                                                 |
+|         4 | Diana         | Network    |        2 | normal                                                                                                                                                                                 |
+|         5 | Eve           | Software   |        3 | VIP                                                                                                                                                                                    |
+|         6 | Frank         | Software   |        1 | normal                                                                                                                                                                                 |
+|         7 | Grace         | Network    |        2 | normal                                                                                                                                                                                 |
+|         8 | Henry         | Hardware   |        3 | normal                                                                                                                                                                                 |
+|         9 | Ivy           | Network    |        1 | normal                                                                                                                                                                                 |
+|        10 | Jack          | Software   |        3 | normal                                                                                                                                                                                 |
+|        11 | Kate          | Hardware   |        2 | normal                                                                                                                                                                                 |
+|        12 | Leo           | Software   |        2 | normal                                                                                                                                                                                 |
+|        13 | Mona          | Network    |        3 | VIP                                                                                                                                                                                    |
+|        14 | Nina          | Hardware   |        1 | normal                                                                                                                                                                                 |
+|        15 | Oscar         | Software   |        3 | normal                                                                                                                                                                                 |
+|        16 | Paul          | Network    |        2 | normal                                                                                                                                                                                 |
+|        17 | Queen         | Hardware   |        1 | normal                                                                                                                                                                                 |
+|        18 | Rita          | Software   |        2 | normal                                                                                                                                                                                 |
+|        19 | Sam           | Network    |        3 | VIP                                                                                                                                                                                    |
+|        20 | Tina          | Hardware   |        2 | normal                                                                                                                                                                                 |
++-----------+---------------+------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+
+✅ 5. Show ticket summary: "High Priority Open", "Low Priority Closed", or "Other"
+ select ticket_id,customer_name,issue_type,priority, case
+    -> when priority=3 and status='open' then 'high priority open'
+    -> when priority=1 and status='Closed' then 'Low priority Closed'
+    -> else 'other'
+    -> end
+    -> from display;
++-----------+---------------+------------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | case
+when priority=3 and status='open' then 'high priority open'
+when priority=1 and status='Closed' then 'Low priority Closed'
+else 'other'
+end |
++-----------+---------------+------------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | high priority open                                                                                                                               |
+|         2 | Bob           | Software   |        2 | other                                                                                                                                            |
+|         3 | Charlie       | Hardware   |        1 | other                                                                                                                                            |
+|         4 | Diana         | Network    |        2 | other                                                                                                                                            |
+|         5 | Eve           | Software   |        3 | other                                                                                                                                            |
+|         6 | Frank         | Software   |        1 | other                                                                                                                                            |
+|         7 | Grace         | Network    |        2 | other                                                                                                                                            |
+|         8 | Henry         | Hardware   |        3 | high priority open                                                                                                                               |
+|         9 | Ivy           | Network    |        1 | Low priority Closed                                                                                                                              |
+|        10 | Jack          | Software   |        3 | high priority open                                                                                                                               |
+|        11 | Kate          | Hardware   |        2 | other                                                                                                                                            |
+|        12 | Leo           | Software   |        2 | other                                                                                                                                            |
+|        13 | Mona          | Network    |        3 | other                                                                                                                                            |
+|        14 | Nina          | Hardware   |        1 | other                                                                                                                                            |
+|        15 | Oscar         | Software   |        3 | other                                                                                                                                            |
+|        16 | Paul          | Network    |        2 | other                                                                                                                                            |
+|        17 | Queen         | Hardware   |        1 | other                                                                                                                                            |
+|        18 | Rita          | Software   |        2 | other                                                                                                                                            |
+|        19 | Sam           | Network    |        3 | high priority open                                                                                                                               |
+|        20 | Tina          | Hardware   |        2 | other                                                                                                                                            |
++-----------+---------------+------------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+
+✅ 6. Mark follow-up required if ticket is pending or priority is high
+ select ticket_id,customer_name,issue_type,priority, case
+    -> when status='Pending' or priority=3 then 'yes'
+    -> else 'other'
+    -> end
+    -> from display;
++-----------+---------------+------------+----------+----------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | case
+when status='Pending' or priority=3 then 'yes'
+else 'other'
+end |
++-----------+---------------+------------+----------+----------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | yes                                                                  |
+|         2 | Bob           | Software   |        2 | other                                                                |
+|         3 | Charlie       | Hardware   |        1 | yes                                                                  |
+|         4 | Diana         | Network    |        2 | other                                                                |
+|         5 | Eve           | Software   |        3 | yes                                                                  |
+|         6 | Frank         | Software   |        1 | yes                                                                  |
+|         7 | Grace         | Network    |        2 | other                                                                |
+|         8 | Henry         | Hardware   |        3 | yes                                                                  |
+|         9 | Ivy           | Network    |        1 | other                                                                |
+|        10 | Jack          | Software   |        3 | yes                                                                  |
+|        11 | Kate          | Hardware   |        2 | yes                                                                  |
+|        12 | Leo           | Software   |        2 | other                                                                |
+|        13 | Mona          | Network    |        3 | yes                                                                  |
+|        14 | Nina          | Hardware   |        1 | other                                                                |
+|        15 | Oscar         | Software   |        3 | yes                                                                  |
+|        16 | Paul          | Network    |        2 | other                                                                |
+|        17 | Queen         | Hardware   |        1 | yes                                                                  |
+|        18 | Rita          | Software   |        2 | other                                                                |
+|        19 | Sam           | Network    |        3 | yes                                                                  |
+|        20 | Tina          | Hardware   |        2 | other                                                                |
++-----------+---------------+------------+----------+----------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+
+✅ 7. Assign handling group based on issue_type
+select ticket_id,customer_name,issue_type,priority, case
+    -> when issue_type='software' then 'software support'
+    -> when issue_type='hardware' then 'hardware support'
+    -> when issue_type='network' then 'network support'
+    -> else 'general support'
+    -> end
+    -> from display;
++-----------+---------------+------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | case
+when issue_type='software' then 'software support'
+when issue_type='hardware' then 'hardware support'
+when issue_type='network' then 'network support'
+else 'general support'
+end |
++-----------+---------------+------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | network support                                                                                                                                                                        |
+|         2 | Bob           | Software   |        2 | software support                                                                                                                                                                       |
+|         3 | Charlie       | Hardware   |        1 | hardware support                                                                                                                                                                       |
+|         4 | Diana         | Network    |        2 | network support                                                                                                                                                                        |
+|         5 | Eve           | Software   |        3 | software support                                                                                                                                                                       |
+|         6 | Frank         | Software   |        1 | software support                                                                                                                                                                       |
+|         7 | Grace         | Network    |        2 | network support                                                                                                                                                                        |
+|         8 | Henry         | Hardware   |        3 | hardware support                                                                                                                                                                       |
+|         9 | Ivy           | Network    |        1 | network support                                                                                                                                                                        |
+|        10 | Jack          | Software   |        3 | software support                                                                                                                                                                       |
+|        11 | Kate          | Hardware   |        2 | hardware support                                                                                                                                                                       |
+|        12 | Leo           | Software   |        2 | software support                                                                                                                                                                       |
+|        13 | Mona          | Network    |        3 | network support                                                                                                                                                                        |
+|        14 | Nina          | Hardware   |        1 | hardware support                                                                                                                                                                       |
+|        15 | Oscar         | Software   |        3 | software support                                                                                                                                                                       |
+|        16 | Paul          | Network    |        2 | network support                                                                                                                                                                        |
+|        17 | Queen         | Hardware   |        1 | hardware support                                                                                                                                                                       |
+|        18 | Rita          | Software   |        2 | software support                                                                                                                                                                       |
+|        19 | Sam           | Network    |        3 | network support                                                                                                                                                                        |
+|        20 | Tina          | Hardware   |        2 | hardware support                                                                                                                                                                       |
++-----------+---------------+------------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+✅ 8. Label cities as "HQ" if in New York or Chicago
+select ticket_id,customer_name,issue_type,priority,location, case
+    -> when location in ('new york','chicago') then 'hq'
+    -> else 'branch'
+    -> end
+    -> from display;
++-----------+---------------+------------+----------+---------------+--------------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | location      | case
+when location in ('new york','chicago') then 'hq'
+else 'branch'
+end |
++-----------+---------------+------------+----------+---------------+--------------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | New York      | hq                                                                       |
+|         2 | Bob           | Software   |        2 | Chicago       | hq                                                                       |
+|         3 | Charlie       | Hardware   |        1 | San Francisco | branch                                                                   |
+|         4 | Diana         | Network    |        2 | New York      | hq                                                                       |
+|         5 | Eve           | Software   |        3 | Boston        | branch                                                                   |
+|         6 | Frank         | Software   |        1 | Seattle       | branch                                                                   |
+|         7 | Grace         | Network    |        2 | Los Angeles   | branch                                                                   |
+|         8 | Henry         | Hardware   |        3 | Houston       | branch                                                                   |
+|         9 | Ivy           | Network    |        1 | Chicago       | hq                                                                       |
+|        10 | Jack          | Software   |        3 | New York      | hq                                                                       |
+|        11 | Kate          | Hardware   |        2 | Boston        | branch                                                                   |
+|        12 | Leo           | Software   |        2 | San Francisco | branch                                                                   |
+|        13 | Mona          | Network    |        3 | New York      | hq                                                                       |
+|        14 | Nina          | Hardware   |        1 | Seattle       | branch                                                                   |
+|        15 | Oscar         | Software   |        3 | Los Angeles   | branch                                                                   |
+|        16 | Paul          | Network    |        2 | Houston       | branch                                                                   |
+|        17 | Queen         | Hardware   |        1 | New York      | hq                                                                       |
+|        18 | Rita          | Software   |        2 | Chicago       | hq                                                                       |
+|        19 | Sam           | Network    |        3 | Boston        | branch                                                                   |
+|        20 | Tina          | Hardware   |        2 | Seattle       | branch                                                                   |
++-----------+---------------+------------+----------+---------------+--------------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+✅ 11. Show how many tickets fall into each priority label
+select ticket_id,customer_name,issue_type,priority, case
+    -> when priority=3 then 'high'
+    -> when priority=2 then 'medium'
+    -> when priority=1 then 'low'
+    -> else '-'
+    -> end
+    -> from display;
++-----------+---------------+------------+----------+--------------------------------------------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | case
+when priority=3 then 'high'
+when priority=2 then 'medium'
+when priority=1 then 'low'
+else '-'
+end |
++-----------+---------------+------------+----------+--------------------------------------------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | high                                                                                                   |
+|         2 | Bob           | Software   |        2 | medium                                                                                                 |
+|         3 | Charlie       | Hardware   |        1 | low                                                                                                    |
+|         4 | Diana         | Network    |        2 | medium                                                                                                 |
+|         5 | Eve           | Software   |        3 | high                                                                                                   |
+|         6 | Frank         | Software   |        1 | low                                                                                                    |
+|         7 | Grace         | Network    |        2 | medium                                                                                                 |
+|         8 | Henry         | Hardware   |        3 | high                                                                                                   |
+|         9 | Ivy           | Network    |        1 | low                                                                                                    |
+|        10 | Jack          | Software   |        3 | high                                                                                                   |
+|        11 | Kate          | Hardware   |        2 | medium                                                                                                 |
+|        12 | Leo           | Software   |        2 | medium                                                                                                 |
+|        13 | Mona          | Network    |        3 | high                                                                                                   |
+|        14 | Nina          | Hardware   |        1 | low                                                                                                    |
+|        15 | Oscar         | Software   |        3 | high                                                                                                   |
+|        16 | Paul          | Network    |        2 | medium                                                                                                 |
+|        17 | Queen         | Hardware   |        1 | low                                                                                                    |
+|        18 | Rita          | Software   |        2 | medium                                                                                                 |
+|        19 | Sam           | Network    |        3 | high                                                                                                   |
+|        20 | Tina          | Hardware   |        2 | medium                                                                                                 |
++-----------+---------------+------------+----------+--------------------------------------------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+✅ 12. Show a response plan:
+Immediate (High + Open)
+Scheduled (Medium + Pending)
+Escalate (Low + Escalated)
+Standard otherwise
+select ticket_id,customer_name,issue_type,priority,location, case
+    -> when priority=3 and status='urgent' then 'immediate'
+    -> when priority=3 and status='pending' then 'scheduled'
+    -> when priority=3 and status='escalated' then 'escalate'
+    -> else 'standard'
+    -> end
+    -> from display;
++-----------+---------------+------------+----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | location      | case
+when priority=3 and status='urgent' then 'immediate'
+when priority=3 and status='pending' then 'scheduled'
+when priority=3 and status='escalated' then 'escalate'
+else 'standard'
+end |
++-----------+---------------+------------+----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | New York      | standard                                                                                                                                                                                   |
+|         2 | Bob           | Software   |        2 | Chicago       | standard                                                                                                                                                                                   |
+|         3 | Charlie       | Hardware   |        1 | San Francisco | standard                                                                                                                                                                                   |
+|         4 | Diana         | Network    |        2 | New York      | standard                                                                                                                                                                                   |
+|         5 | Eve           | Software   |        3 | Boston        | standard                                                                                                                                                                                   |
+|         6 | Frank         | Software   |        1 | Seattle       | standard                                                                                                                                                                                   |
+|         7 | Grace         | Network    |        2 | Los Angeles   | standard                                                                                                                                                                                   |
+|         8 | Henry         | Hardware   |        3 | Houston       | standard                                                                                                                                                                                   |
+|         9 | Ivy           | Network    |        1 | Chicago       | standard                                                                                                                                                                                   |
+|        10 | Jack          | Software   |        3 | New York      | standard                                                                                                                                                                                   |
+|        11 | Kate          | Hardware   |        2 | Boston        | standard                                                                                                                                                                                   |
+|        12 | Leo           | Software   |        2 | San Francisco | standard                                                                                                                                                                                   |
+|        13 | Mona          | Network    |        3 | New York      | escalate                                                                                                                                                                                   |
+|        14 | Nina          | Hardware   |        1 | Seattle       | standard                                                                                                                                                                                   |
+|        15 | Oscar         | Software   |        3 | Los Angeles   | scheduled                                                                                                                                                                                  |
+|        16 | Paul          | Network    |        2 | Houston       | standard                                                                                                                                                                                   |
+|        17 | Queen         | Hardware   |        1 | New York      | standard                                                                                                                                                                                   |
+|        18 | Rita          | Software   |        2 | Chicago       | standard                                                                                                                                                                                   |
+|        19 | Sam           | Network    |        3 | Boston        | standard                                                                                                                                                                                   |
+|        20 | Tina          | Hardware   |        2 | Seattle       | standard                                                                                                                                                                                   |
++-----------+---------------+------------+----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+✅ 13. Show ticket age category
+If created_date is today → 'New'
+If more than 7 days ago → 'Old'
+Else → 'Recent'
+ select ticket_id,customer_name,issue_type,priority,location, case
+    -> when created_date=current_date then 'new'
+    -> when created_date<=current_date-interval 7 day then 'old'
+    -> else 'recent'
+    -> end
+    -> from display;
++-----------+---------------+------------+----------+---------------+----------------------------------------------------------------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | location      | case
+when created_date=current_date then 'new'
+when created_date<=current_date-interval 7 day then 'old'
+else 'recent'
+end |
++-----------+---------------+------------+----------+---------------+----------------------------------------------------------------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | New York      | old                                                                                                                        |
+|         2 | Bob           | Software   |        2 | Chicago       | old                                                                                                                        |
+|         3 | Charlie       | Hardware   |        1 | San Francisco | recent                                                                                                                     |
+|         4 | Diana         | Network    |        2 | New York      | recent                                                                                                                     |
+|         5 | Eve           | Software   |        3 | Boston        | old                                                                                                                        |
+|         6 | Frank         | Software   |        1 | Seattle       | recent                                                                                                                     |
+|         7 | Grace         | Network    |        2 | Los Angeles   | recent                                                                                                                     |
+|         8 | Henry         | Hardware   |        3 | Houston       | old                                                                                                                        |
+|         9 | Ivy           | Network    |        1 | Chicago       | old                                                                                                                        |
+|        10 | Jack          | Software   |        3 | New York      | recent                                                                                                                     |
+|        11 | Kate          | Hardware   |        2 | Boston        | recent                                                                                                                     |
+|        12 | Leo           | Software   |        2 | San Francisco | old                                                                                                                        |
+|        13 | Mona          | Network    |        3 | New York      | recent                                                                                                                     |
+|        14 | Nina          | Hardware   |        1 | Seattle       | recent                                                                                                                     |
+|        15 | Oscar         | Software   |        3 | Los Angeles   | old                                                                                                                        |
+|        16 | Paul          | Network    |        2 | Houston       | old                                                                                                                        |
+|        17 | Queen         | Hardware   |        1 | New York      | recent                                                                                                                     |
+|        18 | Rita          | Software   |        2 | Chicago       | recent                                                                                                                     |
+|        19 | Sam           | Network    |        3 | Boston        | recent                                                                                                                     |
+|        20 | Tina          | Hardware   |        2 | Seattle       | recent                                                                                                                     |
++-----------+---------------+------------+----------+---------------+----------------------------------------------------------------------------------------------------------------------------+
+20 rows in set (0.01 sec)
+
+✅ 14. Count tickets by assigned team type: Software, Hardware, Network
+ select ticket_id,customer_name,issue_type,priority,location, case
+    -> WHEN status = 'Urgent' OR status = 'Open' THEN
+    ->             CASE
+    ->                 WHEN priority = 3 THEN 'Critical Open'
+    ->                 WHEN priority = 2 THEN 'Important Open'
+    ->                 ELSE 'Minor Open'
+    ->             END
+    ->         ELSE 'Not Open'
+    ->     END
+    -> from display;
++-----------+---------------+------------+----------+---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | location      | case
+WHEN status = 'Urgent' OR status = 'Open' THEN
+            CASE
+                WHEN priority = 3 THEN 'Critical Open'
+                WHEN priority = 2 THEN 'Important Open'
+                ELSE 'Minor Open'
+            END
+        ELSE 'Not Open' |
++-----------+---------------+------------+----------+---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | New York      | Critical Open                                                                                                                                                                                                                                                   |
+|         2 | Bob           | Software   |        2 | Chicago       | Not Open                                                                                                                                                                                                                                                        |
+|         3 | Charlie       | Hardware   |        1 | San Francisco | Not Open                                                                                                                                                                                                                                                        |
+|         4 | Diana         | Network    |        2 | New York      | Important Open                                                                                                                                                                                                                                                  |
+|         5 | Eve           | Software   |        3 | Boston        | Not Open                                                                                                                                                                                                                                                        |
+|         6 | Frank         | Software   |        1 | Seattle       | Not Open                                                                                                                                                                                                                                                        |
+|         7 | Grace         | Network    |        2 | Los Angeles   | Not Open                                                                                                                                                                                                                                                        |
+|         8 | Henry         | Hardware   |        3 | Houston       | Critical Open                                                                                                                                                                                                                                                   |
+|         9 | Ivy           | Network    |        1 | Chicago       | Not Open                                                                                                                                                                                                                                                        |
+|        10 | Jack          | Software   |        3 | New York      | Critical Open                                                                                                                                                                                                                                                   |
+|        11 | Kate          | Hardware   |        2 | Boston        | Not Open                                                                                                                                                                                                                                                        |
+|        12 | Leo           | Software   |        2 | San Francisco | Not Open                                                                                                                                                                                                                                                        |
+|        13 | Mona          | Network    |        3 | New York      | Not Open                                                                                                                                                                                                                                                        |
+|        14 | Nina          | Hardware   |        1 | Seattle       | Minor Open                                                                                                                                                                                                                                                      |
+|        15 | Oscar         | Software   |        3 | Los Angeles   | Not Open                                                                                                                                                                                                                                                        |
+|        16 | Paul          | Network    |        2 | Houston       | Not Open                                                                                                                                                                                                                                                        |
+|        17 | Queen         | Hardware   |        1 | New York      | Not Open                                                                                                                                                                                                                                                        |
+|        18 | Rita          | Software   |        2 | Chicago       | Important Open                                                                                                                                                                                                                                                  |
+|        19 | Sam           | Network    |        3 | Boston        | Critical Open                                                                                                                                                                                                                                                   |
+|        20 | Tina          | Hardware   |        2 | Seattle       | Not Open                                                                                                                                                                                                                                                        |
++-----------+---------------+------------+----------+---------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+20 rows in set (0.00 sec)
+
+
+✅ 15. Create a column with nested CASE:
+If Open:
+High → 'Critical Open'
+Medium → 'Important Open'
+Else → 'Minor Open'
+Else: 'Not Open'
+
+
+✅ 16. Count number of Open vs. Closed vs. Other tickets
+    
+
+✅ 17. List all tickets and show "Assigned Team Type"
+If team contains "Software" → 'SW'
+If team contains "Hardware" → 'HW'
+If team contains "Network" → 'NW'
+ SELECT
+    ->     ticket_id,
+    ->     customer_name,
+    ->     issue_type,
+    ->     priority,
+    ->     assigned_team,
+    ->     CASE
+    ->         WHEN assigned_team LIKE '%Software%' THEN 'SW'
+    ->         WHEN assigned_team LIKE '%Hardware%' THEN 'HW'
+    ->         WHEN assigned_team LIKE '%Network%'  THEN 'NW'
+    ->         ELSE 'Other'
+    ->     END
+    -> from display;
++-----------+---------------+------------+----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| ticket_id | customer_name | issue_type | priority | assigned_team | CASE
+        WHEN assigned_team LIKE '%Software%' THEN 'SW'
+        WHEN assigned_team LIKE '%Hardware%' THEN 'HW'
+        WHEN assigned_team LIKE '%Network%'  THEN 'NW'
+        ELSE 'Other'
+    END |
++-----------+---------------+------------+----------+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|         1 | Alice         | Network    |        3 | Network Team  | NW                                                                                                                                                                                                     |
+|         2 | Bob           | Software   |        2 | Software Team | SW                                                                                                                                                                                                     |
+|         3 | Charlie       | Hardware   |        1 | Hardware Team | HW                                                                                                                                                                                                     |
+|         4 | Diana         | Network    |        2 | Network Team  | NW                                                                                                                                                                                                     |
+|         5 | Eve           | Software   |        3 | Software Team | SW                                                                                                                                                                                                     |
+|         6 | Frank         | Software   |        1 | Software Team | SW
